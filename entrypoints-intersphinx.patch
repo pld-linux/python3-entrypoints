@@ -1,0 +1,8 @@
+--- entrypoints-0.4/doc/conf.py.orig	2019-01-07 19:03:51.848916000 +0100
++++ entrypoints-0.4/doc/conf.py	2025-11-25 21:57:13.627510197 +0100
+@@ -290,4 +290,4 @@ texinfo_documents = [
+ 
+ 
+ # Example configuration for intersphinx: refer to the Python standard library.
+-intersphinx_mapping = {'https://docs.python.org/': None}
++intersphinx_mapping = {"python": ('https://docs.python.org/', None)}

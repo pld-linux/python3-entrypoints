@@ -13,19 +13,22 @@ Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/entrypoints/
 Source0:	https://files.pythonhosted.org/packages/source/e/entrypoints/entrypoints-%{version}.tar.gz
 # Source0-md5:	3acd8b72119a8fb1eac7030c24ac6b49
+Patch0:		entrypoints-intersphinx.patch
 URL:		https://pypi.org/project/entrypoints/
-BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	python3-build
+BuildRequires:	python3-flit_core >= 2
+BuildRequires:	python3-flit_core < 4
 BuildRequires:	python3-installer
-BuildRequires:	python3-modules >= 1:3.5
+BuildRequires:	python3-modules >= 1:3.6
 %if %{with tests}
 BuildRequires:	python3-pytest
 %endif
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 2.044
 %if %{with doc}
-BuildRequires:	sphinx-pdg
+BuildRequires:	sphinx-pdg-3
 %endif
-Requires:	python3-modules >= 1:3.5
+Requires:	python3-modules >= 1:3.6
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -68,16 +71,19 @@ Dokumentacja API modułu Pythona entrypoints.
 
 %prep
 %setup -q -n entrypoints-%{version}
+%patch -P0 -p1
 
 %build
 %py3_build_pyproject
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 %{__python3} -m pytest tests
 %endif
 
 %if %{with doc}
-%{__make} -C doc html
+%{__make} -C doc html \
+	SPHINXBUILD=sphinx-build-3
 %endif
 
 %install
